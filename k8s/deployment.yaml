@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yummops
+  labels:
+    app: yummops
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: yummops
+  template:
+    metadata:
+      labels:
+        app: yummops
+    spec:
+      containers:
+      - name: web
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html-volume
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: html-volume
+        configMap:
+          name: yummops-html
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: yummops-html
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>YumMops</title>
+    </head>
+    <body>
+        <h1>YumMops v1.0 (GitOps Staging)</h1>
+        <p>This app is managed autonomously by the Dev Team Agent.</p>
+    </body>
+    </html>
