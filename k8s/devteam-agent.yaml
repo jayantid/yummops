@@ -12,7 +12,7 @@ metadata:
 type: Opaque
 stringData:
   api-server-key: "demo-gateway-key-12345"
-  github-token: "REPLACE_WITH_GITHUB_TOKEN_SECRET"
+  github-token: "<GITHUB_TOKEN>"
 ---
 apiVersion: v1
 kind: ConfigMap
