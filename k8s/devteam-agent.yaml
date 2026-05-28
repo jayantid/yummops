@@ -12,7 +12,7 @@ metadata:
 type: Opaque
 stringData:
   api-server-key: "demo-gateway-key-12345"
-  github-token: "${GITHUB_TOKEN}"
+  github-token: "REDACTED"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -22,10 +22,10 @@ metadata:
 data:
   SETTINGS.md: |
     # GKE Scope Configuration
-    - **Cluster Name:** default
-    - **Cluster Location:** default
+    - **Cluster Name:** demo-cluster-2
+    - **Cluster Location:** us-central1-a
     - **Namespace:** yummops-test
-    - **Git Repo:** git@github.com:jayantid/yummops.git
+    - **Git Repo:** https://github.com/jayantid/yummops.git
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -108,3 +108,27 @@ spec:
         - name: config-volume
           configMap:
             name: devteam-agent-config
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: devteam-agent-read-role
+  namespace: yummops-test
+rules:
+  - apiGroups: ["", "apps"]
+    resources: ["deployments", "services", "configmaps", "pods", "namespaces"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: devteam-agent-read-role-binding
+  namespace: yummops-test
+subjects:
+  - kind: ServiceAccount
+    name: devteam-agent-sa
+    namespace: yummops-test
+roleRef:
+  kind: Role
+  name: devteam-agent-read-role
+  apiGroup: rbac.authorization.k8s.io
