@@ -12,7 +12,7 @@ metadata:
 type: Opaque
 stringData:
   api-server-key: "demo-gateway-key-12345"
-  github-token: "REDACTED"
+  github-token: "<GITHUB_TOKEN>"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -22,8 +22,8 @@ metadata:
 data:
   SETTINGS.md: |
     # GKE Scope Configuration
-    - **Cluster Name:** demo-cluster-2
-    - **Cluster Location:** us-central1-a
+    - **Cluster Name:** <CLUSTER_NAME>
+    - **Cluster Location:** <CLUSTER_LOCATION>
     - **Namespace:** yummops-test
     - **Git Repo:** https://github.com/jayantid/yummops.git
 ---
@@ -59,7 +59,7 @@ spec:
       serviceAccountName: devteam-agent-sa
       containers:
         - name: devteam-agent
-          image: us-central1-docker.pkg.dev/jayantid-gke-dev/kube-agents/devteam-agent:latest
+          image: <REPO>/devteam-agent:latest
           ports:
             - containerPort: 8642
               name: api
