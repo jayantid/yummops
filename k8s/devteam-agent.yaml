@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devteam-agent-yummops-test
+  namespace: yummops-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devteam-agent
+  template:
+    metadata:
+      labels:
+        app: devteam-agent
+    spec:
+      containers:
+      - name: agent
+        image: gcr.io/your-project/devteam-agent:latest
+        env:
+        - name: NAMESPACE
+          value: yummops-test
+        - name: CLUSTER_NAME
+          value: demo-cluster-2
+        - name: CLUSTER_LOCATION
+          value: us-central1-a
+        - name: GIT_REPO
+          value: https://github.com/jayantid/yummops.git
