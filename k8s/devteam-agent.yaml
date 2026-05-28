@@ -59,7 +59,7 @@ spec:
       serviceAccountName: devteam-agent-sa
       containers:
         - name: devteam-agent
-          image: us-central1-docker.pkg.dev/yummops-registry/devteam-agent:latest
+          image: us-central1-docker.pkg.dev/jayantid-gke-dev/kube-agents/devteam-agent:latest
           ports:
             - containerPort: 8642
               name: api
