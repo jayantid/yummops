@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-portal
+  labels:
+    app: frontend-portal
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: frontend-portal
+  template:
+    metadata:
+      labels:
+        app: frontend-portal
+    spec:
+      containers:
+      - name: frontend
+        image: nginx:alpine
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 100m
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        volumeMounts:
+        - name: theme-volume
+          mountPath: /usr/share/nginx/html/theme.css
+          subPath: theme.css
+      volumes:
+      - name: theme-volume
+        configMap:
+          name: portal-theme
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: portal-theme
+data:
+  theme.css: |
+    body { background-color: #f4f4f4; color: #333; }

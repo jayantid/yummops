@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-server
+  labels:
+    app: api-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-server
+  template:
+    metadata:
+      labels:
+        app: api-server
+    spec:
+      containers:
+      - name: api-server
+        image: golang:alpine
+        command: ["/bin/sh", "-c", "while true; do echo 'log entry' >> /var/log/app/app.log; sleep 5; done"]
+        resources:
+          requests:
+            cpu: 200m
+        volumeMounts:
+        - name: log-storage
+          mountPath: /var/log/app
+      - name: fluentbit
+        image: fluent/fluent-bit:latest
+        resources:
+          requests:
+            cpu: 50m
+        volumeMounts:
+        - name: log-storage
+          mountPath: /var/log/app
+      volumes:
+      - name: log-storage
+        emptyDir: {}
