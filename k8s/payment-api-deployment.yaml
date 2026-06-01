@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-api
+  namespace: yummops-test
+  labels:
+    app: payment-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-api
+  template:
+    metadata:
+      labels:
+        app: payment-api
+      annotations:
+        gke-gcsfuse/volumes: "true"
+    spec:
+      containers:
+      - name: payment-api
+        image: gcr.io/yummops/payment-api:latest
+        volumeMounts:
+        - name: payment-assets
+          mountPath: /mnt/gcs/assets
+      volumes:
+      - name: payment-assets
+        csi:
+          driver: gcsfuse.csi.storage.gke.io
+          volumeAttributes:
+            bucketName: payment-assets
+            mountOptions: "implicit-dirs"
