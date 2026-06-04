@@ -2,11 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: yummops
+  namespace: yummops-test
+  labels:
+    app: yummops
 spec:
+  type: ClusterIP
   ports:
   - port: 80
-    targetPort: 80
+    targetPort: 8080
     protocol: TCP
+    name: http
   selector:
     app: yummops
-  type: ClusterIP
