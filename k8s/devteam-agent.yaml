@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devteam-agent
+  namespace: kubeagents-system
+  labels:
+    app: devteam-agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devteam-agent
+  template:
+    metadata:
+      labels:
+        app: devteam-agent
+    spec:
+      serviceAccountName: devteam-agent-sa
+      containers:
+        - name: hermes-agent
+          image: us-central1-docker.pkg.dev/jayantid-gkedemos/kube-agents/hermes-agent:latest
+          imagePullPolicy: Always
+          env:
+            - name: API_SERVER_KEY
+              value: "ff8b4232f457db3df42d311c19252df69a7589a55edc52d836b094b63f99be37"
+            - name: GITHUB_TOKEN
+              value: "<GITHUB_TOKEN>"
+            - name: CLUSTER_NAME
+              value: "platform-agent-host"
+            - name: CLUSTER_LOCATION
+              value: "us-east4"
+            - name: GIT_REPO
+              value: "https://github.com/jayantid/yummops"
+            - name: AGENT_BROWSER_ARGS
+              value: ""
