@@ -16,7 +16,7 @@ spec:
         app: yummops
     spec:
       containers:
-      - name: web
+      - name: web # Force update to trigger GitOps reconciliation
         image: us-central1-docker.pkg.dev/agentic-harness-demo/demo/yummops:v1.2.2
         ports:
         - containerPort: 8080
