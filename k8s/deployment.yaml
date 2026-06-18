@@ -16,7 +16,7 @@ spec:
         app: yummops
     spec:
       containers:
-      - name: web # Cosmetic change to trigger GitOps reconciliation (updated again)
+      - name: web # Cosmetic change to trigger GitOps reconciliation (updated again and again)
         image: us-central1-docker.pkg.dev/agentic-harness-demo/demo/yummops:v1.2.2
         ports:
         - containerPort: 8080
